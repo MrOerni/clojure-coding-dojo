@@ -43,6 +43,9 @@
   (apply + (map (partial element-at world) (neighbor-positions [x y]))))
 
 
+(defn update-cell [world position]
+  (rule (compute-neighbor-count world position) (element-at world position)))
+
 (defn update-world
   "Computes the next generation."
   [world]
