@@ -44,12 +44,15 @@
 
 
 (defn update-cell [world position]
-  (rule (compute-neighbor-count world position) (element-at world position)))
+  (rule (compute-neighbor-count world position) (pos? (element-at world position))))
 
 (defn update-world
   "Computes the next generation."
   [world]
-  world)
+  (map-indexed
+    (fn [row-index row] (map-indexed
+                          (fn [col-index _] (update-cell world [col-index row-index])) row))
+    world))
 
 (comment
   ;; Visualisierung anzeigen
