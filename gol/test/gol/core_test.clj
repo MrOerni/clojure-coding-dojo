@@ -5,7 +5,12 @@
             [clojure.spec.test :as stest] 
             [gol.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest alive-test
+  (testing "Dead cell stays dead")
+  (testing "Dead cell coming alive")
+  (testing "Living cell dies"
+    (is (= 0 (rule 0 true))))
+  (testing "Living cell stays alive"
+    (is (= 1 (rule 2 true)))
+    (is (= 1 (rule 3 true)))))
 
