@@ -27,7 +27,9 @@
   "Gets the neighbor count and whether the cell is alive,
    returns 0 iff the cell should die."
   [ncount alive?]
-  alive?)
+  (if alive?
+    (if (< 1 ncount 4) 1 0)
+    (if (= 3 ncount) 1 0)))
 
 
 (defn compute-neighbor-count
@@ -46,8 +48,8 @@
   ;; Simulation anhalten
   (stop-simulation)
   ;; Simulation starten
-  (start-simulation glider) 
-  )
+  (start-simulation glider))
+
 
 
 ;; ---- HELPER FUNCTIONS
