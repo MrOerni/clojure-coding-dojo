@@ -31,11 +31,17 @@
     (if (< 1 ncount 4) 1 0)
     (if (= 3 ncount) 1 0)))
 
+(defn neighbor-positions [[x y]]
+  (for [xx (range (dec x) (+ x 2))
+        yy (range (dec y) (+ y 2))
+        :when (or (not= x xx) (not= y yy))]
+    [xx yy]))
 
 (defn compute-neighbor-count
   "Computes the number of alive neighbors for the cell at position x y"
   [world [x y]]
-  0)
+  (apply + (map (partial element-at world) (neighbor-positions [x y]))))
+
 
 (defn update-world
   "Computes the next generation."
