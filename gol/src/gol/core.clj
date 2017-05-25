@@ -27,18 +27,32 @@
   "Gets the neighbor count and whether the cell is alive,
    returns 0 iff the cell should die."
   [ncount alive?]
-  alive?)
+  (if alive?
+    (if (< 1 ncount 4) 1 0)
+    (if (= 3 ncount) 1 0)))
 
+(defn neighbor-positions [[x y]]
+  (for [xx (range (dec x) (+ x 2))
+        yy (range (dec y) (+ y 2))
+        :when (or (not= x xx) (not= y yy))]
+    [xx yy]))
 
 (defn compute-neighbor-count
   "Computes the number of alive neighbors for the cell at position x y"
   [world [x y]]
-  0)
+  (apply + (map (partial element-at world) (neighbor-positions [x y]))))
+
+
+(defn update-cell [world position]
+  (rule (compute-neighbor-count world position) (pos? (element-at world position))))
 
 (defn update-world
   "Computes the next generation."
   [world]
-  world)
+  (map-indexed
+    (fn [row-index row] (map-indexed
+                          (fn [col-index _] (update-cell world [col-index row-index])) row))
+    world))
 
 (comment
   ;; Visualisierung anzeigen
@@ -46,8 +60,8 @@
   ;; Simulation anhalten
   (stop-simulation)
   ;; Simulation starten
-  (start-simulation glider) 
-  )
+  (start-simulation glider))
+
 
 
 ;; ---- HELPER FUNCTIONS
